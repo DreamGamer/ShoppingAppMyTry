@@ -2,11 +2,11 @@ import { createStackNavigator } from "react-navigation-stack";
 
 // SCREENS
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
-import ShopItemsScreen from "../screens/shop/ShopItemsScreen";
+import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 
 const ShopNavigation = createStackNavigator({
     shopItems: {
-        screen: ShopItemsScreen,
+        screen: ProductsOverviewScreen,
     },
     productDetails: {
         screen: ProductDetailsScreen,

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from "react-native";
 
 
-const ShopItemsScreen = props => {
+const ProductsOverviewScreen = props => {
     return (
         <View style={styles.screen}>
             <Text>ShopItemsScreen</Text>
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ShopItemsScreen;
+export default ProductsOverviewScreen;

@@ -1,18 +1,13 @@
 import { createStackNavigator } from "react-navigation-stack";
 
 // SCREENS
-import ManageProductsScreen from "../screens/products/ManageProductsScreen";
-import AddProduct from "../screens/products/AddProduct";
+import OrdersScreen from "../screens/orders/OrdersScreen";
 
 
 const ShopNavigator = createStackNavigator({
-    manageProductsScreen: {
-        screen: ManageProductsScreen,
-    },
-    addProduct: {
-        screen: AddProduct
+    ordersScreen: {
+        screen: OrdersScreen,
     }
-
 });
 
 export default ShopNavigator;
