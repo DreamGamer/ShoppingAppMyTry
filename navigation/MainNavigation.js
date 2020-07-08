@@ -1,26 +1,24 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
-import ShopItemsScreen from "../screens/ShopItemsScreen";
-import ProductDetailsScreen from "../screens/ProductDetailsScreen";
 
+// IMPORT Navigations
+import ShopNavigation from "./ShopNavigation";
+import OrdersNavigation from "./OrdersNavigaton";
+import ProductsNavigation from "./ProductsNavigation";
 
-const ShopNavigator = createStackNavigator({
-    shopItems: {
-        screen: ShopItemsScreen,
-    },
-    productDetails: {
-        screen: ProductDetailsScreen,
-    }
-
-});
 
 const MainNavigation = createDrawerNavigator({
     shop: {
-        screen: ShopNavigator
+        screen: ShopNavigation,
     },
+    orders: {
+        screen: OrdersNavigation,
+    },
+    products: {
+        screen: ProductsNavigation
+    }
 });
-
 
 
 // EXPORT Default Navigation
