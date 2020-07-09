@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text } from "react-native";
+import { FlatList } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 
 const ProductsOverviewScreen = props => {
+    const products = useSelector(state => state.products.availableProducts);
     return (
-        <View style={styles.screen}>
-            <Text>ShopItemsScreen</Text>
-        </View>
+        <FlatList data={products} renderItem={itemData => <Text>{itemData.item.title}</Text>} />
     )
 };
 

@@ -5,7 +5,7 @@ import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 
 const ShopNavigation = createStackNavigator({
-    shopItems: {
+    productsOverviewScreen: {
         screen: ProductsOverviewScreen,
     },
     productDetails: {
