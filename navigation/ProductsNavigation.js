@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import ManageProductsScreen from "../screens/products/ManageProductsScreen";
 import AddProduct from "../screens/products/AddProduct";
 import EditProduct from "../screens/products/EditProduct";
+import DefaultValues from "../constants/DefaultValues";
 
 
 const ProductsNavigation = createStackNavigator({
@@ -15,6 +16,15 @@ const ProductsNavigation = createStackNavigator({
     },
     editProduct: EditProduct,
 
+}, {
+    defaultNavigationOptions:{
+        headerTitleStyle: {
+            fontFamily: DefaultValues.fontBold,
+        },
+        headerBackTitleStyle: {
+            fontFamily: DefaultValues.fontBold,
+        }
+    }
 });
 
 export default ProductsNavigation;

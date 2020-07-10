@@ -4,15 +4,18 @@ import DefaultValues from "../../constants/DefaultValues";
 import AddItemToCart from "./AddItemToCart";
 import Colors from '../../constants/Colors';
 import DetailsButton from "../../components/shop/DetailsButton";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ProductItem = props => {
     return (
         <View style={styles.container}>
             <View style={styles.backgroundImageContainer}>
-                <ImageBackground style={styles.backgroundImage} source={{ uri: props.imageURL }}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>{props.title}</Text>
-                    </View>
+                <ImageBackground style={styles.backgroundImage} source={{ uri: props.imageURL }} >
+                    <TouchableOpacity onPress={props.onViewDetails} activeOpacity={0.8}>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>{props.title}</Text>
+                        </View>
+                    </TouchableOpacity>
                 </ImageBackground>
             </View>
 
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
     },
     addToCartContainer: {
         justifyContent: "center",
-        
+
     },
     detailsContainer: {
         height: "10%",

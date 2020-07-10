@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         fontFamily: DefaultValues.fontBold,
         fontSize: 14,
         padding: 10,
+        color: "#000",
     },
 });
 
