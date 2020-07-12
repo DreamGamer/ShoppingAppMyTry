@@ -3,6 +3,7 @@ import { createStackNavigator } from "react-navigation-stack";
 // SCREENS
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
+import ShoppingCart from "../screens/shop/ShoppingCart";
 import DefaultValues from "../constants/DefaultValues";
 
 const ShopNavigation = createStackNavigator({
@@ -11,8 +12,10 @@ const ShopNavigation = createStackNavigator({
     },
     productDetails: {
         screen: ProductDetailsScreen,
+    },
+    shoppingCart: {
+        screen: ShoppingCart,
     }
-
 }, {
     defaultNavigationOptions:{
         headerTitleStyle: {

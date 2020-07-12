@@ -12,4 +12,5 @@ export default {
     grey: "#1b1b1b",
     shadowColor: "#000",
     lightGrey: "#e0e0e0",
+    HeaderButtonsColor: "#000",
 }

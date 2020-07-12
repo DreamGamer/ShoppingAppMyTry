@@ -4,13 +4,16 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Colors from '../../constants/Colors';
 import AddItemToCart from '../../components/shop/AddItemToCart';
 import DefaultValues from '../../constants/DefaultValues';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as cartActions from "../../store/actions/cart";
 
 
 const ProductDetailsScreen = props => {
     const productID = props.navigation.getParam("itemID");
 
     const selectedItem = useSelector(state => state.products.availableProducts.find(value => value.id === productID));
+
+    const dispatch = useDispatch();
 
 
     return (
@@ -34,7 +37,7 @@ const ProductDetailsScreen = props => {
                             <Text style={styles.priceText}>{selectedItem.price.toFixed(2)}€</Text>
                         </View>
                         <View style={styles.addToCartContainer}>
-                            <AddItemToCart onPress={() => { }} />
+                            <AddItemToCart onPress={() => { dispatch(cartActions.addToCart(selectedItem)) }} />
                         </View>
                     </View>
 

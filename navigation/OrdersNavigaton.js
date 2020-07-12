@@ -16,7 +16,7 @@ const ShopNavigator = createStackNavigator({
         },
         headerBackTitleStyle: {
             fontFamily: DefaultValues.fontBold,
-        }
+        },
     }
 });
 
