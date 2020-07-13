@@ -5,6 +5,7 @@ import DefaultValues from '../../constants/DefaultValues';
 import Colors from '../../constants/Colors';
 import { FlatList } from 'react-native-gesture-handler';
 import * as cartActions from "../../store/actions/cart";
+import * as orderActions from "../../store/actions/order";
 
 import CartItem from "../../components/shop/CartItem";
 
@@ -26,14 +27,16 @@ const ShoppingCart = props => {
                 sum: state.cart.items[key].sum,
             })
         }
-        return listOfCartItems;
+        return listOfCartItems.sort((a, b) => a.productID > b.productID ? 1 : -1);
     });
 
     return (
         <View style={styles.container}>
             <View style={styles.actionContainer}>
                 <Text style={styles.totalAmount}>Total: <Text style={styles.highlightText}>{totalAmount.toFixed(2)} €</Text></Text>
-                <Button title="Order Now" disabled={cartItems.length <= 0} />
+                <Button title="Order Now" disabled={cartItems.length <= 0} onPress={() => {
+                    dispatch(orderActions.addOrder(cartItems, totalAmount));
+                }} />
             </View>
 
             <View style={styles.itemsContainer}>

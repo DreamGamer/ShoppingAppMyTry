@@ -7,6 +7,7 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import productsReducer from "./store/reducers/products";
 import cartReducer  from "./store/reducers/cart";
+import orderReducer  from "./store/reducers/order";
 import MainNavigation from './navigation/MainNavigation';
 import { enableScreens } from "react-native-screens";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -15,6 +16,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
+  orders: orderReducer
 });
 
 const store = createStore(rootReducer, composeWithDevTools());

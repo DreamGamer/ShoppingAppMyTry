@@ -16,7 +16,7 @@ const ProductsOverviewScreen = props => {
 
 
     const showDetaiils = (id, title) => {
-        props.navigation.navigate({routeName: "productDetails", params: {itemID: id, itemTitle: title}});
+        props.navigation.navigate({ routeName: "productDetails", params: { itemID: id, itemTitle: title } });
     };
 
 
@@ -39,7 +39,14 @@ ProductsOverviewScreen.navigationOptions = navigationData => {
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item title="Cart" iconName="ios-cart" onPress={() => {
-                    navigationData.navigation.navigate({routeName: "shoppingCart"});
+                    navigationData.navigation.navigate({ routeName: "shoppingCart" });
+                }} />
+            </HeaderButtons>
+        ),
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item title="Menu" iconName="ios-menu" onPress={() => {
+                    navigationData.navigation.toggleDrawer();
                 }} />
             </HeaderButtons>
         )

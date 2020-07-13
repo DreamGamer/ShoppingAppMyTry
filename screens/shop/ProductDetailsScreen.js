@@ -6,6 +6,8 @@ import AddItemToCart from '../../components/shop/AddItemToCart';
 import DefaultValues from '../../constants/DefaultValues';
 import { useSelector, useDispatch } from 'react-redux';
 import * as cartActions from "../../store/actions/cart";
+import HeaderButton from "../ui/HeaderButton";
+import { HeaderButtons, Item} from "react-navigation-header-buttons";
 
 
 const ProductDetailsScreen = props => {
@@ -52,6 +54,13 @@ ProductDetailsScreen.navigationOptions = navigationData => {
 
     return {
         title: title,
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item title="Cart" iconName="ios-cart" onPress={() => {
+                    navigationData.navigation.navigate({routeName: "shoppingCart"});
+                }} />
+            </HeaderButtons>
+        )
     }
 };
 
