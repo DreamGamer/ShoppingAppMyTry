@@ -43,6 +43,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.lightGrey,
         borderRadius: 3,
         overflow: "hidden",
+        shadowColor: Colors.shadowColor,
+        shadowOpacity: 0.26,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 10,
+        elevation: 5,
     },
     backgroundImageContainer: {
         width: "100%",
