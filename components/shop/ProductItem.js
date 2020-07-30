@@ -18,18 +18,12 @@ const ProductItem = props => {
                     </TouchableOpacity>
                 </ImageBackground>
             </View>
-
             <View style={styles.detailsContainer}>
                 <DetailsButton onPress={props.onViewDetails} />
             </View>
 
             <View style={styles.actionContainer}>
-                <View style={styles.priceTextContainer}>
-                    <Text style={styles.priceText}>{props.price.toFixed(2)}€</Text>
-                </View>
-                <View style={styles.addToCartContainer}>
-                    <AddItemToCart onPress={props.onAddToCart} />
-                </View>
+                {props.children}
             </View >
         </View >
     )
@@ -78,21 +72,17 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: 20,
     },
-    priceTextContainer: {
-        height: "100%",
-        justifyContent: "center",
-    },
     priceText: {
         fontFamily: DefaultValues.fontRegular,
         fontSize: 22,
     },
-    addToCartContainer: {
-        justifyContent: "center",
-
-    },
     detailsContainer: {
         height: "10%",
-    }
+    },
+    actionItem: {
+        height: "100%",
+        justifyContent: "center",
+    },
 });
 
 export default ProductItem;

@@ -15,12 +15,16 @@ const OrderItem = props => {
                 <Text style={styles.totalAmount}>{props.totalAmount.toFixed(2)} €</Text>
                 <Text style={styles.date}>{props.date}</Text>
             </View>
-            <Button title="Show Details" onPress={() => {
+            <Button title={showDetails ? "Hide Details" : "Show Details"} onPress={() => {
                 setShowDetails(state => !state);
             }} />
-            {showDetails && <View>
-                {props.items.map(cartItem => <CartItem quanitity={cartItem.quanitity} amount={cartItem.sum} title={cartItem.productTitle} />)}
-                </View>}
+            {showDetails &&
+                <View style={styles.detailsContainer}>
+                    {props.items.map(cartItem => (
+                        <CartItem key={cartItem.productID} quantity={cartItem.quantity} totalAmount={cartItem.sum} title={cartItem.productTitle} />
+                    ))}
+                </View>
+            }
         </View>
     )
 };
@@ -54,6 +58,9 @@ const styles = StyleSheet.create({
         fontFamily: DefaultValues.fontRegular,
         fontSize: 16,
         color: "#888"
+    },
+    detailsContainer: {
+        width: "100%",
     }
 });
 

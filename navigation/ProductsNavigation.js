@@ -2,9 +2,10 @@ import { createStackNavigator } from "react-navigation-stack";
 
 // SCREENS
 import ManageProductsScreen from "../screens/products/ManageProductsScreen";
-import AddProduct from "../screens/products/AddProduct";
-import EditProduct from "../screens/products/EditProduct";
+import AddProductScreen from "../screens/products/AddProductScreen";
+import EditProductScreen from "../screens/products/EditProductScreen";
 import DefaultValues from "../constants/DefaultValues";
+import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 
 
 const ProductsNavigation = createStackNavigator({
@@ -12,9 +13,14 @@ const ProductsNavigation = createStackNavigator({
         screen: ManageProductsScreen,
     },
     addProduct: {
-        screen: AddProduct,
+        screen: AddProductScreen,
     },
-    editProduct: EditProduct,
+    editProduct: {
+        screen: EditProductScreen,
+    },
+    productDetailsUser: {
+        screen: ProductDetailsScreen,
+    },
 
 }, {
     defaultNavigationOptions:{

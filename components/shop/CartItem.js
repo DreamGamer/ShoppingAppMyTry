@@ -12,10 +12,12 @@ const CartItem = props => {
                 <Text style={styles.title}>{props.title}</Text>
             </View>
             <View style={styles.itemData}>
-                <Text style={styles.sum}>{props.sum.toFixed(2)} €</Text>
-                <TouchableOpacity onPress={props.onRemove} style={styles.trashcan}>
-                    <Ionicons name="md-trash" size={23} color={Colors.danger} />
-                </TouchableOpacity>
+                <Text style={styles.totalAmount}>{props.totalAmount.toFixed(2)} €</Text>
+                {props.deletable &&
+                    <TouchableOpacity onPress={props.onRemove} style={styles.trashcan}>
+                        <Ionicons name="md-trash" size={23} color={Colors.danger} />
+                    </TouchableOpacity>
+                }
             </View>
         </View>
     )
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginRight: 5
     },
-    sum: {
+    totalAmount: {
         fontFamily: DefaultValues.fontBold,
         fontSize: 16,
     },

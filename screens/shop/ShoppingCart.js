@@ -33,16 +33,16 @@ const ShoppingCart = props => {
     return (
         <View style={styles.container}>
             <View style={styles.actionContainer}>
-                <Text style={styles.totalAmount}>Total: <Text style={styles.highlightText}>{totalAmount.toFixed(2)} €</Text></Text>
+                <Text style={styles.totalAmount}>Total: <Text style={styles.highlightText}>{Math.round(totalAmount.toFixed(2) * 100) / 100} €</Text></Text>
                 <Button title="Order Now" disabled={cartItems.length <= 0} onPress={() => {
                     dispatch(orderActions.addOrder(cartItems, totalAmount));
                 }} />
             </View>
 
             <View style={styles.itemsContainer}>
-                <FlatList keyExtractor={(item, index) => item.productID} data={cartItems} renderItem={itemData => <CartItem  onRemove={() => {
+                <FlatList keyExtractor={(item, index) => item.productID} data={cartItems} renderItem={itemData => <CartItem deletable onRemove={() => {
                     dispatch(cartActions.removeFromCart(itemData.item.productID));
-                }} title={itemData.item.productTitle} quantity={itemData.item.quantity} sum={itemData.item.sum} />} />
+                }} title={itemData.item.productTitle} quantity={itemData.item.quantity} totalAmount={itemData.item.sum} />} />
             </View>
         </View>
     )

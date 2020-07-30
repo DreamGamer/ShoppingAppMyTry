@@ -34,7 +34,7 @@ const MainNavigation = createDrawerNavigator({
         navigationOptions: {
             drawerLabel: "Products",
             drawerIcon: drawerConfig => (
-                <Ionicons name="ios-list" size={23} color={drawerConfig.tintColor} />
+                <Ionicons name="ios-create" size={23} color={drawerConfig.tintColor} />
             ),
         }
     }

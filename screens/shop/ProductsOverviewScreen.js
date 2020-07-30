@@ -8,26 +8,35 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import HeaderButton from "../ui/HeaderButton";
 
+import AddItemToCart from "../../components/shop/AddItemToCart";
+import DefaultValues from '../../constants/DefaultValues';
+
 
 const ProductsOverviewScreen = props => {
     const products = useSelector(state => state.products.availableProducts);
 
     const dispatch = useDispatch();
 
-
-    const showDetaiils = (id, title) => {
-        props.navigation.navigate({ routeName: "productDetails", params: { itemID: id, itemTitle: title } });
+    const showDetaiilsHandler = (id, title) => {
+        props.navigation.navigate({ routeName: "productDetailsShop", params: { itemID: id, itemTitle: title } });
     };
 
-
+    const addToCartHandler = choosedItem => {
+        dispatch(cartActions.addToCart(choosedItem));
+    }
 
     return (
         <View style={styles.itemList}>
-            <FlatList data={products} renderItem={itemData => <ProductList item={itemData.item} onViewDetails={() => {
-                showDetaiils(itemData.item.id, itemData.item.title);
-            }} onAddToCart={() => {
-                dispatch(cartActions.addToCart(itemData.item));
-            }} />} style={styles.fullWidth} />
+            <FlatList data={products} renderItem={itemData => (
+                <ProductList title={itemData.item.title} imageURL={itemData.item.imageURL} price={itemData.item.price} onViewDetails={() => { showDetaiilsHandler(itemData.item.id, itemData.item.title) }} onAddToCart={() => { onAddToCartHandler(itemData.item) }}>
+                    <View style={styles.actionItem}>
+                        <Text style={styles.priceText}>{itemData.item.price.toFixed(2)}€</Text>
+                    </View>
+                    <View style={styles.actionItem}>
+                        <AddItemToCart onPress={() => { addToCartHandler(itemData.item) }} />
+                    </View>
+                </ProductList>
+            )} style={styles.fullWidth} />
         </View>
     )
 };
@@ -59,7 +68,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-    }
+    },
+    actionItem: {
+        height: "100%",
+        justifyContent: "center",
+    },
+    priceText: {
+        fontFamily: DefaultValues.fontRegular,
+        fontSize: 22,
+    },
 });
 
 export default ProductsOverviewScreen;

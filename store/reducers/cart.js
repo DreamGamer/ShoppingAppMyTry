@@ -1,6 +1,7 @@
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
 import CartItem from "../../models/Cart-Item";
 import { ADD_ORDER } from "../actions/order";
+import { DELETE_PRODUCT } from "../actions/products";
 
 const initalState = {
     items: {},
@@ -31,6 +32,7 @@ export default (state = initalState, action) => {
                 }
             }
             break;
+
         case REMOVE_FROM_CART:
             const selectedCartItem = state.items[action.productID];
             const currentQuantity = selectedCartItem.quantity;
@@ -52,8 +54,24 @@ export default (state = initalState, action) => {
                 items: updatedCartItems,
                 totalAmount: state.totalAmount - productPrice2
             }
+
         case ADD_ORDER:
             return initalState;
+
+        case DELETE_PRODUCT:
+            if (!state.items[action.productID]) {
+                return state;
+            }
+            const updatedItems = {...state.items};
+            const itemTotal = state.items[action.productID].sum;
+            delete updatedItems[action.productID];
+
+            return {
+                ...state,
+                items: updatedItems,
+                totalAmount: state.totalAmount - itemTotal,
+
+            }
 
     }
 

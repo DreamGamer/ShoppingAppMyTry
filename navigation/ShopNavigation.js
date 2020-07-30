@@ -10,7 +10,7 @@ const ShopNavigation = createStackNavigator({
     productsOverviewScreen: {
         screen: ProductsOverviewScreen,
     },
-    productDetails: {
+    productDetailsShop: {
         screen: ProductDetailsScreen,
     },
     shoppingCart: {

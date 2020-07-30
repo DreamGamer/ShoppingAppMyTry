@@ -7,7 +7,7 @@ import DefaultValues from '../../constants/DefaultValues';
 import { useSelector, useDispatch } from 'react-redux';
 import * as cartActions from "../../store/actions/cart";
 import HeaderButton from "../ui/HeaderButton";
-import { HeaderButtons, Item} from "react-navigation-header-buttons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 
 const ProductDetailsScreen = props => {
@@ -43,6 +43,11 @@ const ProductDetailsScreen = props => {
                         </View>
                     </View>
 
+                    <View style={styles.descriptionContainer}>
+                        <Text style={styles.descriptionTitle}>Description:</Text>
+                        <Text style={styles.descriptionText} >{selectedItem.description}</Text>
+                    </View>
+
                 </View>
             </ScrollView>
         </View>
@@ -57,7 +62,7 @@ ProductDetailsScreen.navigationOptions = navigationData => {
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item title="Cart" iconName="ios-cart" onPress={() => {
-                    navigationData.navigation.navigate({routeName: "shoppingCart"});
+                    navigationData.navigation.navigate({ routeName: "shoppingCart" });
                 }} />
             </HeaderButtons>
         )
@@ -112,7 +117,18 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-    }
+    },
+    descriptionTitle: {
+        fontFamily: DefaultValues.fontBold,
+        fontSize: 18,
+    },
+    descriptionText: {
+        fontFamily: DefaultValues.fontRegular,
+        fontSize: 14,
+    },
+    descriptionContainer: {
+        marginHorizontal: 10,
+    },
 });
 
 export default ProductDetailsScreen;
