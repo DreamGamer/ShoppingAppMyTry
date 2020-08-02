@@ -6,7 +6,7 @@ import ProductList from "../../components/shop/ProductList";
 import * as cartActions from "../../store/actions/cart";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
-import HeaderButton from "../ui/HeaderButton";
+import HeaderButton from "../../components/ui/HeaderButton";
 
 import AddItemToCart from "../../components/shop/AddItemToCart";
 import DefaultValues from '../../constants/DefaultValues';

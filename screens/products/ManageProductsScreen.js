@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ProductList from "../../components/shop/ProductList";
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import HeaderButton from "../ui/HeaderButton";;
+import HeaderButton from "../../components/ui/HeaderButton";;
 
 import * as productsAction from "../../store/actions/products";
 

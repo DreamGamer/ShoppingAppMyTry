@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from "react-native";
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import HeaderButton from "../ui/HeaderButton";
+import HeaderButton from "../../components/ui/HeaderButton";
 import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 
