@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import productsReducer from "./store/reducers/products";
 import cartReducer  from "./store/reducers/cart";
@@ -11,6 +11,7 @@ import orderReducer  from "./store/reducers/order";
 import MainNavigation from './navigation/MainNavigation';
 import { enableScreens } from "react-native-screens";
 import { composeWithDevTools } from "redux-devtools-extension";
+import ReduxThunk from "redux-thunk";
 
 
 const rootReducer = combineReducers({
@@ -19,7 +20,7 @@ const rootReducer = combineReducers({
   orders: orderReducer
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(rootReducer, composeWithDevTools(), applyMiddleware(ReduxThunk));
 
 
 export default function App() {

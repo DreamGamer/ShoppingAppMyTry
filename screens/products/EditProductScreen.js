@@ -1,13 +1,16 @@
-import React, { useReducer } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Alert } from "react-native";
+import React, { useReducer, useCallback } from 'react';
+import { StyleSheet, View, Button, Alert, KeyboardAvoidingView } from "react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import DefaultValues from '../../constants/DefaultValues';
 import { useSelector, useDispatch } from 'react-redux';
 import * as productActions from "../../store/actions/products";
 
+import InputField from "../../components/ui/InputField";
+
 import Colors from "../../constants/Colors";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+const FORM_INPUT_BLUR = "FORM_INPUT_BLUR";
 
 
 const formReducer = (state, action) => {
@@ -15,12 +18,12 @@ const formReducer = (state, action) => {
         case FORM_INPUT_UPDATE:
             const updatedInputValues = {
                 ...state.inputValues,
-                [action.input]: action.value
+                [action.inputID]: action.value
             };
 
             const updatedInputValidities = {
                 ...state.inputValidities,
-                [action.input]: action.isValid,
+                [action.inputID]: action.isValid,
             }
 
             let updatedIsFormValid = true;
@@ -35,6 +38,13 @@ const formReducer = (state, action) => {
                 inputValues: updatedInputValues,
                 inputValidities: updatedInputValidities,
                 isFormValid: updatedIsFormValid,
+            }
+            break;
+
+        case FORM_INPUT_BLUR:
+            return {
+                ...state,
+                touched: true,
             }
             break;
 
@@ -64,7 +74,9 @@ const EditProductsScreen = props => {
             description: selectedProduct ? true : false,
         },
         isFormValid: selectedProduct ? true : false,
-    })
+        touched: false,
+    });
+
 
     const submitDataHandler = () => {
         if (!formState.isFormValid) {
@@ -83,44 +95,29 @@ const EditProductsScreen = props => {
         props.navigation.goBack();
     }
 
-    const inputTextChangeHandler = (inputName, value) => {
-        let isValid = false;
-        if (value.trim().length > 0) {
-            isValid = true;
-        }
+    const inputChangeHandler = useCallback((inputID, value, isValid) => {
         dispatchFormState({
             type: FORM_INPUT_UPDATE,
+            inputID: inputID,
             value: value,
             isValid: isValid,
-            input: inputName,
         });
-    };
+    }, [dispatchFormState]);
 
     return (
-        <ScrollView>
-            <View style={styles.form}>
-                <View style={styles.formControl}>
-                    <Text style={styles.label}>Title</Text>
-                    <TextInput style={{ ...styles.input, ...{ borderBottomColor: formState.inputValidities.title ? "#ccc" : Colors.danger } }} value={formState.inputValues.title} onChangeText={inputTextChangeHandler.bind(this, "title")} keyboardType="default" autoCapitalize="sentences" autoCorrect={true} returnKeyType="next" />
-                </View>
-                <View style={styles.formControl}>
-                    <Text style={styles.label}>Image URL</Text>
-                    <TextInput style={{ ...styles.input, ...{ borderBottomColor: formState.inputValidities.imageURL ? "#ccc" : Colors.danger } }} value={formState.inputValues.imageURL} onChangeText={inputTextChangeHandler.bind(this, "imageURL")} keyboardType="url" returnKeyType="next" />
-                </View>
-                <View style={styles.formControl}>
-                    <Text style={styles.label}>Price</Text>
-                    <TextInput style={{ ...styles.input, ...{ borderBottomColor: formState.inputValidities.price ? "#ccc" : Colors.danger } }} value={formState.inputValues.price} onChangeText={inputTextChangeHandler.bind(this, "price")} editable={selectedProduct ? false : true} keyboardType="decimal-pad" returnKeyType="next" />
-
-                </View>
-                <View style={styles.formControl}>
-                    <Text style={styles.label}>Description</Text>
-                    <TextInput style={{ ...styles.input, ...{ borderBottomColor: formState.inputValidities.description ? "#ccc" : Colors.danger } }} value={formState.inputValues.description} onChangeText={inputTextChangeHandler.bind(this, "description")} keyboardType="default" autoCorrect={true} returnKeyType="default" />
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={100}>
+            <ScrollView>
+                <View style={styles.form}>
+                    <InputField inputID="title" label="Title" onInputChange={inputChangeHandler} keyboardType="default" autoCapitalize="sentences" autoCorrect={true} returnKeyType="next" initValue={selectedProduct ? selectedProduct.title : ""} errorText="Please enter a valid title!" required />
+                    <InputField inputID="imageURL" label="Image URL" onInputChange={inputChangeHandler} keyboardType="url" returnKeyType="next" initValue={selectedProduct ? selectedProduct.imageURL : ""} errorText="Please enter a valid image url!" required />
+                    <InputField inputID="price" label="Price" onInputChange={inputChangeHandler} editable={selectedProduct ? false : true} keyboardType="decimal-pad" returnKeyType="next" initValue={selectedProduct ? selectedProduct.price.toString() : ""} errorText="Please enter a valid price!" required min={0.01} />
+                    <InputField inputID="description" label="Description" onInputChange={inputChangeHandler} keyboardType="default" autoCorrect={true} multiLine={true} numberOfLines={3} initValue={selectedProduct ? selectedProduct.description : ""} errorText="Please enter a valid description!" required minLength={4} />
                 </View>
                 <View style={styles.submitButtonContainer}>
                     <Button title="Submit" color={Colors.danger} onPress={submitDataHandler} />
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView >
+        </KeyboardAvoidingView>
     )
 };
 
@@ -134,19 +131,6 @@ EditProductsScreen.navigationOptions = navigationData => {
 const styles = StyleSheet.create({
     form: {
         margin: 20,
-    },
-    formControl: {
-        width: "100%",
-    },
-    label: {
-        fontFamily: DefaultValues.fontBold,
-        fontSize: 14
-    },
-    input: {
-        paddingHorizontal: 2,
-        paddingVertical: 5,
-        borderBottomWidth: 1,
-        marginBottom: 10,
     },
     submitButtonContainer: {
         marginVertical: 20,
