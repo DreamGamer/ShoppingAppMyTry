@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   orders: orderReducer
 });
 
-const store = createStore(rootReducer, composeWithDevTools(), applyMiddleware(ReduxThunk));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk)));
 
 
 export default function App() {

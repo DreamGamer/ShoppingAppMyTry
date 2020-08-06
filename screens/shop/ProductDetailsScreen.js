@@ -36,7 +36,7 @@ const ProductDetailsScreen = props => {
 
                     <View style={styles.actionContainer}>
                         <View style={styles.priceTextContainer}>
-                            <Text style={styles.priceText}>{selectedItem.price.toFixed(2)}€</Text>
+                            <Text style={styles.priceText}>{selectedItem.price ? selectedItem.price.toFixed(2) : "NaN"}€</Text>
                         </View>
                         <View style={styles.addToCartContainer}>
                             <AddItemToCart onPress={() => { dispatch(cartActions.addToCart(selectedItem)) }} />

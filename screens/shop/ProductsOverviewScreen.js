@@ -1,21 +1,49 @@
-import React from 'react';
-import { StyleSheet, View, Text } from "react-native";
+import React, { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, View, Text, ActivityIndicator, Button } from "react-native";
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductList from "../../components/shop/ProductList";
 import * as cartActions from "../../store/actions/cart";
+import * as productsActions from "../../store/actions/products";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import HeaderButton from "../../components/ui/HeaderButton";
 
 import AddItemToCart from "../../components/shop/AddItemToCart";
 import DefaultValues from '../../constants/DefaultValues';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 const ProductsOverviewScreen = props => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
     const products = useSelector(state => state.products.availableProducts);
 
     const dispatch = useDispatch();
+
+    const loadProducts = useCallback(async () => {
+        setError(null);
+        setIsLoading(true);
+        try {
+            await dispatch(productsActions.fetchProducts());
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
+        }
+        setIsLoading(false);
+    }, [dispatch, setIsLoading, setError]);
+
+    useEffect(() => {
+        loadProducts();
+    }, [dispatch, loadProducts]);
+
+    useEffect(() => {
+        const willFocusListener = props.navigation.addListener("willFocus", loadProducts);
+
+        return () => {
+            willFocusListener.remove();
+        }
+    }, [loadProducts])
 
     const showDetaiilsHandler = (id, title) => {
         props.navigation.navigate({ routeName: "productDetailsShop", params: { itemID: id, itemTitle: title } });
@@ -24,13 +52,41 @@ const ProductsOverviewScreen = props => {
     const addToCartHandler = choosedItem => {
         dispatch(cartActions.addToCart(choosedItem));
     }
+    if (error) {
+        return (
+            <View style={styles.centerContent}>
+                <Text>An error occured!</Text>
+                <Text>Error: {error}</Text>
+                <Button title="Refresh" onPress={loadProducts} />
+            </View>
+        )
+    }
+
+    if (isLoading) {
+        return (
+            <View style={styles.centerContent}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+            </View>
+        )
+    }
+
+
+
+    if (!isLoading && products.length === 0) {
+        return (
+            <View style={styles.centerContent}>
+                <Text>No products found.</Text>
+                <Text>Start create some and fill the Store :)</Text>
+            </View>
+        )
+    }
 
     return (
         <View style={styles.itemList}>
             <FlatList data={products} renderItem={itemData => (
                 <ProductList title={itemData.item.title} imageURL={itemData.item.imageURL} price={itemData.item.price} onViewDetails={() => { showDetaiilsHandler(itemData.item.id, itemData.item.title) }} onAddToCart={() => { onAddToCartHandler(itemData.item) }}>
                     <View style={styles.actionItem}>
-                        <Text style={styles.priceText}>{itemData.item.price.toFixed(2)}€</Text>
+                        <Text style={styles.priceText}>{itemData.item.price ? itemData.item.price.toFixed(2) : "NaN"}€</Text>
                     </View>
                     <View style={styles.actionItem}>
                         <AddItemToCart onPress={() => { addToCartHandler(itemData.item) }} />
@@ -64,6 +120,11 @@ ProductsOverviewScreen.navigationOptions = navigationData => {
 
 
 const styles = StyleSheet.create({
+    centerContent: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
     itemList: {
         flex: 1,
         justifyContent: "center",

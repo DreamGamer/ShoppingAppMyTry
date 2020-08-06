@@ -62,6 +62,8 @@ const InputField = props => {
             isValid = false;
         }
 
+        
+
 
         inputDispatch({ type: INPUT_CHANGE, value: value, isValid: isValid });
     };
