@@ -62,7 +62,9 @@ const InputField = props => {
             isValid = false;
         }
 
-        
+        if (props.decimal && isNaN(value % 1)) {
+            isValid = false;
+        }
 
 
         inputDispatch({ type: INPUT_CHANGE, value: value, isValid: isValid });

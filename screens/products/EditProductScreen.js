@@ -110,7 +110,7 @@ const EditProductsScreen = props => {
                 <View style={styles.form}>
                     <InputField inputID="title" label="Title" onInputChange={inputChangeHandler} keyboardType="default" autoCapitalize="sentences" autoCorrect={true} returnKeyType="next" initValue={selectedProduct ? selectedProduct.title : ""} errorText="Please enter a valid title!" required />
                     <InputField inputID="imageURL" label="Image URL" onInputChange={inputChangeHandler} keyboardType="url" returnKeyType="next" initValue={selectedProduct ? selectedProduct.imageURL : ""} errorText="Please enter a valid image url!" required />
-                    <InputField inputID="price" label="Price" onInputChange={inputChangeHandler} editable={selectedProduct ? false : true} keyboardType="decimal-pad" returnKeyType="next" initValue={selectedProduct ? selectedProduct.price.toString() : ""} errorText="Please enter a valid price!" required min={0.01} />
+                    <InputField inputID="price" label="Price" onInputChange={inputChangeHandler} editable={selectedProduct ? false : true} keyboardType="decimal-pad" returnKeyType="next" initValue={selectedProduct ? selectedProduct.price.toString() : ""} errorText="Please enter a valid price!" required min={0.01} decimal />
                     <InputField inputID="description" label="Description" onInputChange={inputChangeHandler} keyboardType="default" autoCorrect={true} multiLine={true} numberOfLines={3} initValue={selectedProduct ? selectedProduct.description : ""} errorText="Please enter a valid description!" required minLength={4} />
                 </View>
                 <View style={styles.submitButtonContainer}>
