@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, Button } from "react-native";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button, ActivityIndicator } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import DefaultValues from '../../constants/DefaultValues';
 import Colors from '../../constants/Colors';
@@ -13,6 +13,9 @@ import CartItem from "../../components/shop/CartItem";
 const ShoppingCart = props => {
 
     const totalAmount = useSelector(state => state.cart.totalAmount);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -29,14 +32,26 @@ const ShoppingCart = props => {
         }
         return listOfCartItems.sort((a, b) => a.productID > b.productID ? 1 : -1);
     });
+    
+    const placeOrderHandler = async () => {
+        setIsLoading(true);
+        await dispatch(orderActions.addOrder(cartItems, totalAmount));
+        setIsLoading(false);
+    };
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.actionContainer}>
                 <Text style={styles.totalAmount}>Total: <Text style={styles.highlightText}>{Math.round(totalAmount.toFixed(2) * 100) / 100} €</Text></Text>
-                <Button title="Order Now" disabled={cartItems.length <= 0} onPress={() => {
-                    dispatch(orderActions.addOrder(cartItems, totalAmount));
-                }} />
+                <Button title="Order Now" disabled={cartItems.length <= 0} onPress={placeOrderHandler} />
             </View>
 
             <View style={styles.itemsContainer}>
@@ -80,6 +95,11 @@ const styles = StyleSheet.create({
     itemsContainer: {
         width: "90%",
     },
+    centered: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    }
 });
 
 export default ShoppingCart;

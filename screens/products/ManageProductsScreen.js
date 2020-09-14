@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, Button, Alert } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,6 +13,7 @@ import * as productsAction from "../../store/actions/products";
 const ManageProductsScreen = props => {
     const dispatch = useDispatch();
     const userProducts = useSelector(state => state.products.userProducts);
+    const [hasError, setHasError] = useState();
 
 
     const showDetaiilsHandler = (id, title) => {
@@ -26,11 +27,22 @@ const ManageProductsScreen = props => {
     const deleteHandler = (productID) => {
         Alert.alert("Are you sure?", "Do you really want to delete this Product?", [
             {text: "No", style: "default"},
-            {text: "Yes", style: "destructive", onPress: () => {
-                dispatch(productsAction.deleteProduct(productID))
+            {text: "Yes", style: "destructive", onPress: async () => {
+                setHasError(null);
+                try {
+                    await dispatch(productsAction.deleteProduct(productID));
+                } catch (error) {
+                    setHasError(error.message);
+                }
             }}
         ])
     }
+
+    useEffect(() => {
+        if (hasError) {
+            Alert.alert("An error occured!", hasError, [{text: "Okay"}]);
+        }
+    }, [hasError]);
 
     return (
         <View style={styles.itemList}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Button } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator, Button, RefreshControl, ScrollView } from "react-native";
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductList from "../../components/shop/ProductList";
@@ -16,25 +16,29 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const ProductsOverviewScreen = props => {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState();
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [hasError, setHasError] = useState();
     const products = useSelector(state => state.products.availableProducts);
 
     const dispatch = useDispatch();
 
     const loadProducts = useCallback(async () => {
-        setError(null);
-        setIsLoading(true);
+        setHasError(null);
+        setIsRefreshing(true);
         try {
             await dispatch(productsActions.fetchProducts());
         } catch (error) {
             console.log(error);
-            setError(error.message);
+            setHasError(error.message);
         }
-        setIsLoading(false);
-    }, [dispatch, setIsLoading, setError]);
+        setIsRefreshing(false);
+    }, [dispatch, setIsLoading, setHasError, setIsRefreshing]);
 
     useEffect(() => {
-        loadProducts();
+        setIsLoading(true);
+        loadProducts().then(() => {
+            setIsLoading(false);
+        });
     }, [dispatch, loadProducts]);
 
     useEffect(() => {
@@ -52,11 +56,11 @@ const ProductsOverviewScreen = props => {
     const addToCartHandler = choosedItem => {
         dispatch(cartActions.addToCart(choosedItem));
     }
-    if (error) {
+    if (hasError) {
         return (
             <View style={styles.centerContent}>
                 <Text>An error occured!</Text>
-                <Text>Error: {error}</Text>
+                <Text>Error: {hasError}</Text>
                 <Button title="Refresh" onPress={loadProducts} />
             </View>
         )
@@ -82,18 +86,16 @@ const ProductsOverviewScreen = props => {
     }
 
     return (
-        <View style={styles.itemList}>
-            <FlatList data={products} renderItem={itemData => (
-                <ProductList title={itemData.item.title} imageURL={itemData.item.imageURL} price={itemData.item.price} onViewDetails={() => { showDetaiilsHandler(itemData.item.id, itemData.item.title) }} onAddToCart={() => { onAddToCartHandler(itemData.item) }}>
-                    <View style={styles.actionItem}>
-                        <Text style={styles.priceText}>{itemData.item.price ? itemData.item.price.toFixed(2) : "NaN"}€</Text>
-                    </View>
-                    <View style={styles.actionItem}>
-                        <AddItemToCart onPress={() => { addToCartHandler(itemData.item) }} />
-                    </View>
-                </ProductList>
-            )} style={styles.fullWidth} />
-        </View>
+        <FlatList refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={loadProducts} />} data={products} keyExtractor={item => item.id} renderItem={itemData => (
+            <ProductList title={itemData.item.title} imageURL={itemData.item.imageURL} price={itemData.item.price} onViewDetails={() => { showDetaiilsHandler(itemData.item.id, itemData.item.title) }} onAddToCart={() => { onAddToCartHandler(itemData.item) }}>
+                <View style={styles.actionItem}>
+                    <Text style={styles.priceText}>{itemData.item.price ? itemData.item.price.toFixed(2) : "NaN"}€</Text>
+                </View>
+                <View style={styles.actionItem}>
+                    <AddItemToCart onPress={() => { addToCartHandler(itemData.item) }} />
+                </View>
+            </ProductList>
+        )} />
     )
 };
 
@@ -138,6 +140,12 @@ const styles = StyleSheet.create({
         fontFamily: DefaultValues.fontRegular,
         fontSize: 22,
     },
+    scrollView: {
+        flex: 1,
+        backgroundColor: 'pink',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
 });
 
 export default ProductsOverviewScreen;

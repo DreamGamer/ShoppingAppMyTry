@@ -12,7 +12,7 @@ const OrderItem = props => {
     return (
         <View style={styles.container}>
             <View style={styles.informationContainer}>
-                <Text style={styles.totalAmount}>{props.totalAmount.toFixed(2)} €</Text>
+                <Text style={styles.totalAmount}>{isNaN(props.totalAmount) ? props.totalAmount : props.totalAmount.toFixed(2)} €</Text>
                 <Text style={styles.date}>{props.date}</Text>
             </View>
             <Button title={showDetails ? "Hide Details" : "Show Details"} onPress={() => {

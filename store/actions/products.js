@@ -32,11 +32,28 @@ export const fetchProducts = () => {
 }
 
 export const deleteProduct = (productID) => {
-    return { type: DELETE_PRODUCT, productID: productID };
+    return async dispatch => {
+        try {
+            const response = await fetch("https://shoppingappmytry.firebaseio.com/products/" + productID + ".json", {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                throw new Error("Something went wrong while deleting Product!");
+            }
+
+        } catch (error) {
+            throw error;
+        }
+
+
+        dispatch({ type: DELETE_PRODUCT, productID: productID });
+    };
 };
 
 export const createProduct = (title, imageURL, price, description) => {
     return async dispatch => {
+        console.log("Price: " + price);
         const response = await fetch("https://shoppingappmytry.firebaseio.com/products.json", {
             method: "POST",
             headers: {
@@ -66,12 +83,35 @@ export const createProduct = (title, imageURL, price, description) => {
 };
 
 export const updateProduct = (productID, title, imageURL, description) => {
-    return {
-        type: UPDATE_PRODUCT, productData: {
-            productID: productID,
-            title: title,
-            imageURL: imageURL,
-            description: description
+    return async dispatch => {
+
+        try {
+            const response = await fetch("https://shoppingappmytry.firebaseio.com/products/" + productID + ".json", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title: title,
+                    imageURL: imageURL,
+                    description: description,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Something went wrong while updating Product!");
+            }
+        } catch (error) {
+            throw error;
         }
+
+        dispatch({
+            type: UPDATE_PRODUCT, productData: {
+                productID: productID,
+                title: title,
+                imageURL: imageURL,
+                description: description
+            }
+        });
     }
 }
