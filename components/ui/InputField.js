@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontFamily: DefaultValues.fontBold,
-        fontSize: 14
+        fontSize: 16
     },
     errorContainer: {
         marginBottom:10
