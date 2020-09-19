@@ -21,7 +21,7 @@ export const fetchProducts = () => {
             const loadedProducts = [];
 
             for (const key in responseData) {
-                loadedProducts.push(new Product(key, "u1", responseData[key].title, responseData[key].imageURL, responseData[key].description, responseData[key].price));
+                loadedProducts.push(new Product(key, responseData[key].ownerID, responseData[key].title, responseData[key].imageURL, responseData[key].description, responseData[key].price));
             }
 
             dispatch({ type: SET_PRODUCTS, products: loadedProducts, userProducts: loadedProducts.filter(prod => prod.ownerID === userID) });

@@ -7,6 +7,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import * as ordersActions from "../../store/actions/order";
 
 import OrderItem from "../../components/orders/OrderItem";
+import DefaultValues from '../../constants/DefaultValues';
 
 
 const OrdersScreen = props => {
@@ -28,6 +29,14 @@ const OrdersScreen = props => {
         return (
             <View style={styles.centered}>
                 <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
+    if (orders.length === 0) {
+        return (
+            <View style={styles.centered}>
+                <Text style={styles.text}>No Orders found, maybe start ordering something!</Text>
             </View>
         )
     }
@@ -58,7 +67,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    text: {
+        fontFamily: DefaultValues.fontRegular
+    },
 });
 
 export default OrdersScreen;
