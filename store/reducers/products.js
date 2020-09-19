@@ -6,8 +6,8 @@ import Product from "../../models/Product";
 
 
 const initialState = {
-    availableProducts: PRODUCTS,
-    userProducts: PRODUCTS.filter(state => state.ownerID === "u1"),
+    availableProducts: [],
+    userProducts: [],
 };
 
 
@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
             }
             break;
         case CREATE_PRODUCT:
-            const newProduct = new Product(action.productData.id, "u1", action.productData.title, action.productData.imageURL, action.productData.description, action.productData.price);
+            const newProduct = new Product(action.productData.id, action.productData.ownerID, action.productData.title, action.productData.imageURL, action.productData.description, action.productData.price);
 
             return {
                 ...state,
@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 availableProducts: action.products,
-                userProducts: action.products.filter(product => product.ownerID === "u1")
+                userProducts: action.userProducts
             }
             break;
     }

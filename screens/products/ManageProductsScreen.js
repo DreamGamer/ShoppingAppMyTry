@@ -8,6 +8,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from "../../components/ui/HeaderButton";;
 
 import * as productsAction from "../../store/actions/products";
+import DefaultValues from '../../constants/DefaultValues';
 
 
 const ManageProductsScreen = props => {
@@ -43,6 +44,14 @@ const ManageProductsScreen = props => {
             Alert.alert("An error occured!", hasError, [{text: "Okay"}]);
         }
     }, [hasError]);
+
+    if (userProducts.length === 0) {
+        return (
+            <View style={styles.centered}>
+                <Text style={styles.text}>No Products found, maybe start creating some!</Text>
+            </View>
+        )
+    }
 
     return (
         <View style={styles.itemList}>
@@ -94,6 +103,14 @@ const styles = StyleSheet.create({
     actionItem: {
         height: "100%",
         justifyContent: "center",
+    },
+    centered: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    text: {
+        fontFamily: DefaultValues.fontRegular,
     }
 });
 

@@ -4,9 +4,10 @@ export const ADD_ORDER = "ADD_ORDER";
 export const SET_ORDERS = "SET_ORDERS";
 
 export const fetchOrders = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const userID = getState().auth.userID;
         try {
-            const response = await fetch("https://shoppingappmytry.firebaseio.com/orders/u1.json");
+            const response = await fetch("https://shoppingappmytry.firebaseio.com/orders/" + userID +  ".json");
 
             if (!response.ok) {
                 throw new Error("Something went wrong with the response on fetchOrders!");
@@ -27,11 +28,13 @@ export const fetchOrders = () => {
 }
 
 export const addOrder = (cartItems, totalAmount) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         const date = new Date();
+        const token = getState().auth.token;
+        const userID = getState().auth.userID;
 
 
-        const response = await fetch("https://shoppingappmytry.firebaseio.com/orders/u1.json", {
+        const response = await fetch("https://shoppingappmytry.firebaseio.com/orders/" + userID + ".json?auth=" + token, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
