@@ -9,7 +9,7 @@ import productsReducer from "./store/reducers/products";
 import cartReducer  from "./store/reducers/cart";
 import orderReducer  from "./store/reducers/order";
 import authReducer from "./store/reducers/auth";
-import MainNavigation from './navigation/MainNavigation';
+import NavigationContainer from './navigation/NavigationContainer';
 import { enableScreens } from "react-native-screens";
 import { composeWithDevTools } from "redux-devtools-extension";
 import ReduxThunk from "redux-thunk";
@@ -50,7 +50,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <MainNavigation />
+      <NavigationContainer />
     </Provider>
   );
 }

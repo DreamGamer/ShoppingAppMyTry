@@ -26,8 +26,9 @@ const StartScreen = props => {
                 return;
             }
 
-            await dispatch(authActions.authenticate(token, userID));
-            props.navigation.navigate("Shop");
+            const expirationTime = convertedExpireDate.getTime() - new Date().getTime();
+
+            await dispatch(authActions.authenticate(token, userID, expirationTime));
         }
 
         tryLogin();

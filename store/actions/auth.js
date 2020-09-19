@@ -1,11 +1,18 @@
 import AsyncStorage from "@react-native-community/async-storage";
 
+export const AUTHENTICATE = "AUTHENTICATE";
 export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
-export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
 
-export const authenticate = (token, userID) => {
-    return { type: AUTHENTICATE, token: token, userID: userID }
+let logoutTimer;
+
+
+export const authenticate = (token, userID, expirationTime) => {
+    return dispatch => {
+        dispatch(setLogoutTimer(expirationTime));
+        dispatch({ type: AUTHENTICATE, token: token, userID: userID })
+    }
 }
 
 export const signup = (email, password) => {
@@ -43,7 +50,7 @@ export const signup = (email, password) => {
         const responseData = await response.json();
         console.log(responseData);
 
-        dispatch(authenticate(responseData.localId, responseData.idToken));
+        dispatch(authenticate(responseData.localId, responseData.idToken, parseInt(responseData.expiresIn) * 1000));
 
         const expireDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
         saveDataToStorage(responseData.idToken, responseData.localId, expireDate);
@@ -91,12 +98,32 @@ export const login = (email, password) => {
         console.log(responseData);
 
 
-        dispatch(authenticate(responseData.localId, responseData.idToken));
+        dispatch(authenticate(responseData.localId, responseData.idToken, parseInt(responseData.expiresIn) * 1000));
 
         const expireDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
         saveDataToStorage(responseData.idToken, responseData.localId, expireDate);
     };
 };
+
+export const logout = () => {
+    clearLogoutTimer();
+    AsyncStorage.removeItem("userData");
+    return { type: LOGOUT }
+}
+
+const setLogoutTimer = (expirationTime) => {
+    return dispatch => {
+        logoutTimer = setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime);
+    }
+};
+
+const clearLogoutTimer = () => {
+    if (logoutTimer) {
+        clearTimeout(logoutTimer);
+    }
+}
 
 const saveDataToStorage = (token, userID, expireDate) => {
     AsyncStorage.setItem("userData", JSON.stringify({
