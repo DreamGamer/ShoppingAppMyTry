@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import * as config from "../../constants/config";
 
 export const AUTHENTICATE = "AUTHENTICATE";
 export const SIGNUP = "SIGNUP";
@@ -19,7 +20,7 @@ export const signup = (email, password) => {
     return async dispatch => {
         // console.log("Email:" + email);
         // console.log("Password: " + password);
-        const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB-ocvKVQs0KgQUUSMO2Fhixy1WcSzQfdw", {
+        const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + config.API_KEY, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -60,7 +61,7 @@ export const signup = (email, password) => {
 export const login = (email, password) => {
     return async dispatch => {
 
-        const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB-ocvKVQs0KgQUUSMO2Fhixy1WcSzQfdw", {
+        const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + config.API_KEY, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
